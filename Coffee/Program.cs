@@ -13,6 +13,7 @@ namespace CoffeeMachine
         private static readonly string SUGAR_RANGE_MESSAGE = $"Too much sugar is not good for your health. Choose from {MIN_SUGAR} to {MAX_SUGAR}: ";
         private const string FOAM_MESSAGE = "\nFoam the milk?";
         private const string CHOCOLATE_MESSAGE = "\nAdd chocolate sprinkles?";
+        
         static void Main(string[] args)
         {
             Coffee coffee = new Coffee();
