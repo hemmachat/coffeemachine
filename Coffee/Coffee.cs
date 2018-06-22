@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoffeeMachine.Interface;
 
 namespace CoffeeMachine
 {
-    public class Coffee
+    public class Coffee : ICoffee
     {
         public bool IsLarge { get; set; }
         public bool HasMilk { get; set; }
