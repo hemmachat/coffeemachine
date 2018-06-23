@@ -4,11 +4,11 @@ using CoffeeMachine.Interface;
 
 namespace CoffeeMachine
 {
-    class Program
+    public class Program
     {
         private static IContainer Container { get; set; }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<Coffee>().As<ICoffee>();
@@ -19,12 +19,16 @@ namespace CoffeeMachine
             using (var scope = Container.BeginLifetimeScope())
             {
                 var barista = scope.Resolve<IBarista>();
-                barista.AskSize();
-                barista.AskMilk();
-                barista.AskSugar();
-                barista.AskFoam();
-                barista.AskSprinkle();
-                barista.ShowCost(barista.CalculateCost());
+                barista.AskCustomer();
+
+                if (args != null && args.Length != 0 && args[0] == "test")
+                {
+                    barista.ShowCost(barista.CalculateCost(), true);
+                }
+                else
+                {
+                    barista.ShowCost(barista.CalculateCost());
+                }
             }
         }
     }

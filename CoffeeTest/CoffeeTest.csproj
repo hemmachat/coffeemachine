@@ -76,6 +76,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BaristaCalculateCostTest.cs" />
+    <Compile Include="BaristaConsoleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

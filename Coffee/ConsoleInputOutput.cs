@@ -9,15 +9,14 @@ namespace CoffeeMachine
 {
     public class ConsoleInputOutput : IInputOutput
     {
-        public void ShowFinalMessage(string message)
+        public void ShowFinalMessage(string message, bool testMode = false)
         {
             Console.WriteLine(message);
-            Console.ReadKey(true);
-        }
 
-        public void ShowInvalidInput(string message)
-        {
-            Console.WriteLine($"{message} Please try again.");
+            if (!testMode)
+            {
+                Console.ReadKey(true);
+            }
         }
 
         public string ShowPrompt(string message, string promptMessage)

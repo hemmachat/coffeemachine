@@ -12,14 +12,15 @@ namespace CoffeeMachine
         private readonly IInputOutput io;
         private readonly ICoffee coffee;
         public static string PROMPT_MESSAGE = "Press 'y' for Yes, 'n' for No: ";
-        public static string SIZE_MESSAGE = "\nDo you want a large size of coffee?";
-        public static string MILK_MESSAGE = "\nDo you want to add milk to your coffee?";
-        private const string SUGAR_MESSAGE = "\nHow many sugars?";
+        public static string SIZE_MESSAGE = "Do you want a large size of coffee?";
+        public static string MILK_MESSAGE = "Do you want to add milk to your coffee?";
+        public static string SUGAR_MESSAGE = "How many sugars?";
         private const int MIN_SUGAR = 0;
         private const int MAX_SUGAR = 2;
-        private static readonly string SUGAR_RANGE_MESSAGE = $"Choose from {MIN_SUGAR} to {MAX_SUGAR}: ";
-        private const string FOAM_MESSAGE = "\nFoam the milk?";
-        private const string CHOCOLATE_MESSAGE = "\nAdd chocolate sprinkles?";
+        public static string SUGAR_RANGE_MESSAGE = $"Choose from {MIN_SUGAR} to {MAX_SUGAR}: ";
+        public static string FOAM_MESSAGE = "Foam the milk?";
+        public static string SPRINKLE_MESSAGE = "Add chocolate sprinkles?";
+        public static string COST_MESSAGE = "Your coffee cost is: $";
 
         public Barista(IInputOutput inputOutput, ICoffee coffee)
         {
@@ -27,74 +28,52 @@ namespace CoffeeMachine
             this.coffee = coffee;
         }
 
-        public void AskSprinkle()
+        public void AskCustomer()
         {
-            var chocolateInput = io.ShowPrompt(CHOCOLATE_MESSAGE, PROMPT_MESSAGE);
-            var hasSprinkles = false;
-
-            while (!HasValidBoolean(chocolateInput, out hasSprinkles))
-            {
-                io.ShowInvalidInput($"Sorry, you have selected an invalid chocolate - '{chocolateInput}'.");
-                chocolateInput = io.ShowPrompt(CHOCOLATE_MESSAGE, PROMPT_MESSAGE);
-            }
-
-            coffee.HasSprinkles = hasSprinkles;
-        }
-
-        public void AskFoam()
-        {
-            var foamInput = io.ShowPrompt(FOAM_MESSAGE, PROMPT_MESSAGE);
-            var milkIsFoamed = false;
-
-            while (!HasValidBoolean(foamInput, out milkIsFoamed))
-            {
-                io.ShowInvalidInput($"Sorry, you have selected an invalid foam - '{foamInput}'.");
-                foamInput = io.ShowPrompt(FOAM_MESSAGE, PROMPT_MESSAGE);
-            }
-
-            coffee.MilkIsFoamed = milkIsFoamed;
-        }
-
-        public void AskSugar()
-        {
-            var sugarInput = io.ShowPrompt(SUGAR_MESSAGE, SUGAR_RANGE_MESSAGE);
-            var numberOfSugar = 0;
-
-            while (!HasValidSugar(sugarInput, out numberOfSugar))
-            {
-                io.ShowInvalidInput($"Sorry, you have selected an invalid amount of sugar - '{sugarInput}'.");
-                sugarInput = io.ShowPrompt(SUGAR_MESSAGE, SUGAR_RANGE_MESSAGE);
-            }
-
-            coffee.NumberOfSugar = numberOfSugar;
-        }
-
-        public void AskMilk()
-        {
-            var milkInput = io.ShowPrompt(MILK_MESSAGE, PROMPT_MESSAGE);
-            var hasMilk = false;
-
-            while (!HasValidBoolean(milkInput, out hasMilk))
-            {
-                io.ShowInvalidInput($"Sorry, you have selected an invalid milk - '{milkInput}'.");
-                milkInput = io.ShowPrompt(MILK_MESSAGE, PROMPT_MESSAGE);
-            }
-
-            coffee.HasMilk = hasMilk;
-        }
-
-        public void AskSize()
-        {
+            // size
             var largeInput = io.ShowPrompt(SIZE_MESSAGE, PROMPT_MESSAGE);
             var isLarge = false;
 
-            while (!HasValidBoolean(largeInput, out isLarge))
+            if (HasValidBoolean(largeInput, out isLarge))
             {
-                io.ShowInvalidInput($"Sorry, you have selected an invalid coffee size - '{largeInput}'.");
-                largeInput = io.ShowPrompt(SIZE_MESSAGE, PROMPT_MESSAGE);
+                coffee.IsLarge = isLarge;
             }
 
-            coffee.IsLarge = isLarge;
+            // milk
+            var milkInput = io.ShowPrompt(MILK_MESSAGE, PROMPT_MESSAGE);
+            var hasMilk = false;
+
+            if (HasValidBoolean(milkInput, out hasMilk))
+            {
+                coffee.HasMilk = hasMilk;
+            }
+
+            // sugar
+            var sugarInput = io.ShowPrompt(SUGAR_MESSAGE, SUGAR_RANGE_MESSAGE);
+            var numberOfSugar = 0;
+
+            if (HasValidSugar(sugarInput, out numberOfSugar))
+            {
+                coffee.NumberOfSugar = numberOfSugar;
+            }
+
+            // foam
+            var foamInput = io.ShowPrompt(FOAM_MESSAGE, PROMPT_MESSAGE);
+            var milkIsFoamed = false;
+
+            if (HasValidBoolean(foamInput, out milkIsFoamed))
+            {
+                coffee.MilkIsFoamed = milkIsFoamed;
+            }
+
+            // sprinkle
+            var chocolateInput = io.ShowPrompt(SPRINKLE_MESSAGE, PROMPT_MESSAGE);
+            var hasSprinkles = false;
+
+            if (HasValidBoolean(chocolateInput, out hasSprinkles))
+            {
+                coffee.HasSprinkles = hasSprinkles;
+            }
         }
 
         public double CalculateCost()
@@ -130,9 +109,9 @@ namespace CoffeeMachine
             return price;
         }
 
-        public void ShowCost(double cost)
+        public void ShowCost(double cost, bool testMode = false)
         {
-            io.ShowFinalMessage("Your coffee cost is: $" + cost);
+            io.ShowFinalMessage(COST_MESSAGE + cost, testMode);
         }
 
         private bool HasValidSugar(string input, out int sugar)
@@ -166,8 +145,6 @@ namespace CoffeeMachine
 
                 return false;
             }
-
-            input = input.ToLower();
 
             if (input == "y")
             {
