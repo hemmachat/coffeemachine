@@ -75,7 +75,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="BaristaTest.cs" />
+    <Compile Include="BaristaCalculateCostTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

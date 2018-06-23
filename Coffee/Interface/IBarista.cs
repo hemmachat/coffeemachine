@@ -8,7 +8,12 @@ namespace CoffeeMachine.Interface
 {
     public interface IBarista
     {
-        void AskCustomer();
+        void AskSize();
+        void AskMilk();
+        void AskSugar();
+        void AskFoam();
+        void AskSprinkle();
         double CalculateCost();
+        void ShowCost(double cost);
     }
 }

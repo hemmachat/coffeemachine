@@ -19,7 +19,12 @@ namespace CoffeeMachine
             using (var scope = Container.BeginLifetimeScope())
             {
                 var barista = scope.Resolve<IBarista>();
-                barista.AskCustomer();
+                barista.AskSize();
+                barista.AskMilk();
+                barista.AskSugar();
+                barista.AskFoam();
+                barista.AskSprinkle();
+                barista.ShowCost(barista.CalculateCost());
             }
         }
     }

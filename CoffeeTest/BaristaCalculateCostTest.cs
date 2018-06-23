@@ -4,21 +4,57 @@ using System.Linq;
 using Xunit;
 using CoffeeMachine.Interface;
 using CoffeeMachine;
+using System.IO;
 
 namespace CoffeeTest
 {
-    public class BaristaTest
+    public class BaristaCalculateCostTest
     {
         private readonly Mock<ICoffee> _coffee;
         private readonly Mock<IInputOutput> _io;
         private readonly IBarista _barista;
 
-        public BaristaTest()
+        public BaristaCalculateCostTest()
         {
             var factory = new MockRepository(MockBehavior.Loose);
             _coffee = factory.Create<ICoffee>();
             _io = factory.Create<IInputOutput>();
             _barista = new Barista(_io.Object, _coffee.Object);
+        }
+
+        [Fact]
+        public void Default_Coffee()
+        {
+            var cost = _barista.CalculateCost();
+
+            Assert.Equal(2.8, cost, 2);
+        }
+
+        [Fact]
+        public void Small_Espresso_Coffee()
+        {
+            _coffee.Setup(_ => _.IsLarge).Returns(false);
+            _coffee.Setup(_ => _.HasMilk).Returns(false);
+            _coffee.Setup(_ => _.NumberOfSugar).Returns(0);
+            _coffee.Setup(_ => _.MilkIsFoamed).Returns(false);
+            _coffee.Setup(_ => _.HasSprinkles).Returns(false);
+            var cost = _barista.CalculateCost();
+
+            Assert.Equal(2.8, cost, 2);
+        }
+
+        [Fact]
+        public void Large_Espresso_Coffee()
+        {
+            _coffee.Setup(_ => _.IsLarge).Returns(true);
+            _coffee.Setup(_ => _.HasMilk).Returns(false);
+            _coffee.Setup(_ => _.NumberOfSugar).Returns(0);
+            _coffee.Setup(_ => _.MilkIsFoamed).Returns(false);
+            _coffee.Setup(_ => _.HasSprinkles).Returns(false);
+
+            var cost = _barista.CalculateCost();
+
+            Assert.Equal(2.8, cost, 2);
         }
 
         // with sprinkle
