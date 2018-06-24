@@ -92,6 +92,50 @@ namespace CoffeeTest
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void Small_Espresso_Coffee_Empty_Size()
+        {
+            var input = CreateInputValue("", "y", "0", "y", "y");
+            var expected = CreateExpectValue("3.1");
+
+            var actual = TestConsole(input);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void Small_Espresso_Coffee_Space_Size()
+        {
+            var input = CreateInputValue(" ", "y", "0", "y", "y");
+            var expected = CreateExpectValue("3.1");
+
+            var actual = TestConsole(input);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void Small_Espresso_Coffee_Empty_Sugar()
+        {
+            var input = CreateInputValue("y", "y", "", "y", "y");
+            var expected = CreateExpectValue("3.15");
+
+            var actual = TestConsole(input);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void Small_Espresso_Coffee_Space_Sugar()
+        {
+            var input = CreateInputValue("y", "y", " ", "y", "y");
+            var expected = CreateExpectValue("3.15");
+
+            var actual = TestConsole(input);
+
+            Assert.Equal(expected, actual);
+        }
+
         private string TestConsole(string input)
         {
             using (StringWriter sw = new StringWriter())
